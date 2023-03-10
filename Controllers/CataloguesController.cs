@@ -7,91 +7,88 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using marlin.Data;
 using marlin.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace marlin.Controllers
 {
-    public class AccountsController : Controller
+    public class CataloguesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AccountsController(ApplicationDbContext context)
+        public CataloguesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Accounts
+        // GET: Catalogues
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Accounts.ToListAsync());
+              return View(await _context.Catalogue.ToListAsync());
         }
 
-        // GET: Accounts/Details/5
+        // GET: Catalogues/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Accounts == null)
+            if (id == null || _context.Catalogue == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Accounts
+            var catalogue = await _context.Catalogue
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (accounts == null)
+            if (catalogue == null)
             {
                 return NotFound();
             }
 
-            return View(accounts);
+            return View(catalogue);
         }
 
-        // GET: Accounts/Create
-
-        [Authorize]
+        // GET: Catalogues/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Accounts/Create
+        // POST: Catalogues/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,AccountID,LegalCode,Name,Description,Address,Phone,Email,Supplier,Buyer")] Accounts accounts)
+        public async Task<IActionResult> Create([Bind("ID,AccountID,ProductID,SourceCode,Name,Description,Barcode,Unit,Status,LastChangeDate")] Catalogue catalogue)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(accounts);
+                _context.Add(catalogue);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(accounts);
+            return View(catalogue);
         }
 
-        // GET: Accounts/Edit/5
+        // GET: Catalogues/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Accounts == null)
+            if (id == null || _context.Catalogue == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Accounts.FindAsync(id);
-            if (accounts == null)
+            var catalogue = await _context.Catalogue.FindAsync(id);
+            if (catalogue == null)
             {
                 return NotFound();
             }
-            return View(accounts);
+            return View(catalogue);
         }
 
-        // POST: Accounts/Edit/5
+        // POST: Catalogues/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,AccountID,LegalCode,Name,Description,Address,Phone,Email,Supplier,Buyer")] Accounts accounts)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,AccountID,ProductID,SourceCode,Name,Description,Barcode,Unit,Status,LastChangeDate")] Catalogue catalogue)
         {
-            if (id != accounts.ID)
+            if (id != catalogue.ID)
             {
                 return NotFound();
             }
@@ -100,12 +97,12 @@ namespace marlin.Controllers
             {
                 try
                 {
-                    _context.Update(accounts);
+                    _context.Update(catalogue);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountsExists(accounts.ID))
+                    if (!CatalogueExists(catalogue.ID))
                     {
                         return NotFound();
                     }
@@ -116,49 +113,49 @@ namespace marlin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(accounts);
+            return View(catalogue);
         }
 
-        // GET: Accounts/Delete/5
+        // GET: Catalogues/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Accounts == null)
+            if (id == null || _context.Catalogue == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Accounts
+            var catalogue = await _context.Catalogue
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (accounts == null)
+            if (catalogue == null)
             {
                 return NotFound();
             }
 
-            return View(accounts);
+            return View(catalogue);
         }
 
-        // POST: Accounts/Delete/5
+        // POST: Catalogues/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Accounts == null)
+            if (_context.Catalogue == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Accounts'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Catalogue'  is null.");
             }
-            var accounts = await _context.Accounts.FindAsync(id);
-            if (accounts != null)
+            var catalogue = await _context.Catalogue.FindAsync(id);
+            if (catalogue != null)
             {
-                _context.Accounts.Remove(accounts);
+                _context.Catalogue.Remove(catalogue);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccountsExists(int id)
+        private bool CatalogueExists(int id)
         {
-          return _context.Accounts.Any(e => e.ID == id);
+          return _context.Catalogue.Any(e => e.ID == id);
         }
     }
 }

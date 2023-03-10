@@ -11,5 +11,7 @@ namespace marlin.Data
         {
         }
         public DbSet<marlin.Models.Accounts> Accounts { get; set; }
+        public DbSet<marlin.Models.Catalogue> Catalogue { get; set; }
+        public DbSet<marlin.Models.OrderHeader> OrderHeader { get; set; }
     }
 }
